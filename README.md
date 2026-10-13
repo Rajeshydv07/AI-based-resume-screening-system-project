@@ -27,7 +27,7 @@ resume-screening/
 |-- notebooks/
 |   `-- week1_data_collection_eda.ipynb # Week 1 data collection and EDA notebook
 |-- src/
-|   `-- generate_data.py                # Synthetic dataset generation script
+|   `-- dataset_generator.py            # Synthetic dataset generation script
 |-- app.py                              # Streamlit recruiter dashboard
 |-- problem_statement.md                # Project problem definition and scope
 |-- PROJECT_CONTEXT.md                  # Project milestones and working constraints
@@ -41,7 +41,7 @@ resume-screening/
 
 | Week | Milestone | Status | Deliverables |
 |---|---|---|---|
-| Week 1 | Data Collection & EDA | Completed | `src/generate_data.py`, `data/raw_resumes.csv`, `notebooks/week1_data_collection_eda.ipynb` |
+| Week 1 | Data Collection & EDA | Completed | `src/dataset_generator.py`, `data/raw_resumes.csv`, `notebooks/week1_data_collection_eda.ipynb` |
 | Week 2 | EDA Viewer & Deep Dive | In Progress | Outlier analysis, correlation study, distribution analysis |
 | Week 3 | Data Cleaning & Preprocessing | Planned | Duplicate removal, null imputation, text cleaning |
 | Week 4 | Feature Engineering | Planned | TF-IDF extraction, skill encoding, similarity scoring |
@@ -56,7 +56,7 @@ resume-screening/
 ## 4. Week 1 Implementation Details
 
 ### Data Collection
-- Generated a controlled dataset of 1,020 resumes simulating five major technical roles: Data Scientist, Machine Learning Engineer, Python Developer, Web Developer, and Data Analyst.
+- Generated a controlled dataset of 1,020 resumes simulating eight technical roles: Software Engineer, Data Scientist, Python Developer, Web Developer, Machine Learning Engineer, Data Analyst, DevOps Engineer, and Cloud Engineer.
 - Simulated real-world recruitment criteria with controlled data imperfections (missing values, duplicate submissions, and outlier values) to test data preprocessing pipelines.
 
 ### Dataset Schema
@@ -99,7 +99,7 @@ resume-screening/
 
 3. Generate the raw dataset (if not already generated):
    ```bash
-   python src/generate_data.py
+   python src/dataset_generator.py
    ```
 
 4. Launch the recruiter dashboard:

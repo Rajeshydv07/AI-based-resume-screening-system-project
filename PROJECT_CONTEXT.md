@@ -30,7 +30,7 @@ Folders: data/, notebooks/, src/, models/. Also requirements.txt, README.md.
 
 Week 1 - Dataset Preview
 - Problem statement (Technical, Why it matters, Who benefits, Benefits)
-- src/generate_data.py: 1000 rows with pandas, numpy, faker; 5 job roles;
+- src/dataset_generator.py: 1000 rows with pandas, numpy, faker; 8 job roles;
   realistic Shortlisted logic; about 3% missing, 2% duplicates, a few
   outliers; saves data/raw_resumes.csv
 - UI: CSV upload, 4 KPIs (rows, columns, missing, duplicates), head()

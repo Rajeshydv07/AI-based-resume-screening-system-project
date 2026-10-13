@@ -8,19 +8,25 @@ np.random.seed(42)
 random.seed(42)
 
 roles = [
+    'Software Engineer',
     'Data Scientist',
     'Python Developer',
     'Web Developer',
     'Machine Learning Engineer',
-    'Data Analyst'
+    'Data Analyst',
+    'DevOps Engineer',
+    'Cloud Engineer'
 ]
 
 skills_dict = {
+    'Software Engineer': ['Java', 'Python', 'Data Structures', 'Algorithms', 'SQL', 'Git'],
     'Data Scientist': ['Python', 'Machine Learning', 'SQL', 'Pandas', 'Statistics', 'NLP'],
     'Python Developer': ['Python', 'Django', 'Flask', 'PostgreSQL', 'Docker', 'Git'],
     'Web Developer': ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js', 'MongoDB'],
     'Machine Learning Engineer': ['Python', 'TensorFlow', 'PyTorch', 'MLOps', 'Docker', 'Deep Learning'],
-    'Data Analyst': ['SQL', 'Excel', 'Tableau', 'Power BI', 'Python', 'Statistics']
+    'Data Analyst': ['SQL', 'Excel', 'Tableau', 'Power BI', 'Python', 'Statistics'],
+    'DevOps Engineer': ['Docker', 'Kubernetes', 'Linux', 'CI/CD', 'AWS', 'Git'],
+    'Cloud Engineer': ['AWS', 'Azure', 'Linux', 'Python', 'Docker', 'Networking']
 }
 
 educations = ['B.Tech', 'M.Tech', 'B.Sc', 'M.Sc', 'BCA', 'MCA']

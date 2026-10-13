@@ -184,7 +184,7 @@ if "Dataset Explorer" in menu:
     """, unsafe_allow_html=True)
 
     if df is None:
-        st.error("⚠️ Dataset not found. Run `python src/generate_data.py` first.")
+        st.error("⚠️ Dataset not found. Run `python src/dataset_generator.py` first.")
         st.stop()
 
     # KPIs
