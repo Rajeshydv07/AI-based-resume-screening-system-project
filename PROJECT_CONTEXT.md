@@ -107,4 +107,5 @@ Week 9 - Dashboard + Extras
 ## CURRENT STATUS
 (Update this line at the end of every week.)
 Week 1: completed
-Week 2: next
+Week 2: completed
+Week 3: next

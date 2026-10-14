@@ -42,7 +42,7 @@ resume-screening/
 | Week | Milestone | Status | Deliverables |
 |---|---|---|---|
 | Week 1 | Data Collection & EDA | Completed | `src/dataset_generator.py`, `data/raw_resumes.csv`, `notebooks/week1_data_collection_eda.ipynb` |
-| Week 2 | EDA Viewer & Deep Dive | In Progress | Outlier analysis, correlation study, distribution analysis |
+| Week 2 | EDA Viewer & Deep Dive | Completed | `app.py` (W2: EDA Viewer), Outlier detection (IQR & Z-score), Missing report & CSV export, Plotly charts |
 | Week 3 | Data Cleaning & Preprocessing | Planned | Duplicate removal, null imputation, text cleaning |
 | Week 4 | Feature Engineering | Planned | TF-IDF extraction, skill encoding, similarity scoring |
 | Week 5 | Baseline Model Training | Planned | Logistic Regression, Decision Tree, Random Forest |

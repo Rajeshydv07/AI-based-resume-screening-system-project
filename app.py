@@ -6,7 +6,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-# ── Page config ──────────────────────────────────────────────────────────────
+# page config
 st.set_page_config(
     page_title="AI Resume Screening Platform",
     page_icon="🎯",
@@ -14,7 +14,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ── Global CSS ────────────────────────────────────────────────────────────────
+# global css
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -90,7 +90,7 @@ hr { border-color: rgba(99,102,241,0.15) !important; }
 </style>
 """, unsafe_allow_html=True)
 
-# ── Data loader ───────────────────────────────────────────────────────────────
+# data loader
 @st.cache_data
 def load_data():
     path = os.path.join("data", "raw_resumes.csv")
@@ -98,7 +98,7 @@ def load_data():
         return pd.read_csv(path)
     return None
 
-# ── Sidebar ───────────────────────────────────────────────────────────────────
+# sidebar
 with st.sidebar:
     st.markdown("""
     <div style='text-align:center; padding: 10px 0 20px 0;'>
@@ -114,30 +114,54 @@ with st.sidebar:
     menu = st.radio(
         "",
         [
-            "📊  Dataset Explorer",
-            "🔍  EDA & Insights",
-            "🧹  Data Cleaning",
-            "⚙️  Feature Engineering",
-            "🤖  Model Training",
-            "📈  Model Evaluation",
-            "🚀  Full Pipeline",
-            "🗂️  Resume Ranker",
+            "📊  W1: Dataset Preview",
+            "🔍  W2: EDA Viewer",
+            "🧹  W3: Cleaning Comparison",
+            "⚙️  W4: Feature Engineering",
+            "🤖  W5: Baseline Training",
+            "🎯  W6: Model Tuning",
+            "📈  W7: Evaluation",
+            "🚀  W8: Pipeline Runner",
+            "🗂️  W9: Dashboard + Extras",
         ],
         label_visibility="collapsed"
     )
+
+    # W2 sidebar controls
+    outlier_method = "IQR (k = 1.5)"
+    target_col = "Experience_Years"
+    filter_role = "All"
+    filter_edu = "All"
+    view_order = "Default"
+    row_limit = 50
+
+    if "W2" in menu or "EDA" in menu:
+        st.markdown("<hr>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size:0.7rem; font-weight:600; color:#6366f1; letter-spacing:.08em; margin-bottom:8px;'>⚙️ W2 CONTROLS</div>", unsafe_allow_html=True)
+        outlier_method = st.selectbox("Outlier Detection Method", ["IQR (k = 1.5)", "IQR (k = 3.0)", "Z-Score (|z| > 3)"])
+        target_col = st.selectbox("Numeric Column", ["Experience_Years", "CGPA", "Projects_Count"])
+        df_temp = load_data()
+        role_opts = ["All"] + sorted(df_temp["Job_Role"].dropna().unique().tolist()) if df_temp is not None else ["All"]
+        edu_opts = ["All"] + sorted(df_temp["Education"].dropna().unique().tolist()) if df_temp is not None else ["All"]
+        filter_role = st.selectbox("Filter Job Role", role_opts)
+        filter_edu = st.selectbox("Filter Education", edu_opts)
+        view_order = st.radio("Rows Order", ["Default", "Top N", "Bottom N"], horizontal=True)
+        max_rows = len(df_temp) if df_temp is not None else 100
+        row_limit = st.slider("Row Limit (N)", 10, max_rows, min(50, max_rows), 10)
 
     st.markdown("<hr>", unsafe_allow_html=True)
     st.markdown("<div style='font-size:0.7rem; font-weight:600; color:#6366f1; letter-spacing:.08em; margin-bottom:8px;'>🗓️ PROJECT ROADMAP</div>", unsafe_allow_html=True)
 
     weeks = [
-        ("Week 1", "Data Collection & EDA", "✅"),
-        ("Week 2", "Cleaning & Preprocessing", "🔄"),
-        ("Week 3", "Feature Engineering", "⏳"),
-        ("Week 4", "Baseline Modelling", "⏳"),
-        ("Week 5", "Hyperparameter Tuning", "⏳"),
-        ("Week 6", "Model Evaluation", "⏳"),
-        ("Week 7", "Pipeline & Deployment", "⏳"),
-        ("Week 8", "Dashboard & Presentation", "⏳"),
+        ("Week 1", "Dataset Preview", "✅"),
+        ("Week 2", "EDA Viewer", "✅"),
+        ("Week 3", "Cleaning Comparison", "🔄"),
+        ("Week 4", "Feature Engineering", "⏳"),
+        ("Week 5", "Baseline Training", "⏳"),
+        ("Week 6", "Model Tuning", "⏳"),
+        ("Week 7", "Evaluation", "⏳"),
+        ("Week 8", "Pipeline Runner", "⏳"),
+        ("Week 9", "Dashboard + Extras", "⏳"),
     ]
     for w, title, status in weeks:
         color = "#4ade80" if status == "✅" else "#facc15" if status == "🔄" else "#475569"
@@ -160,7 +184,7 @@ with st.sidebar:
         </div>
         """, unsafe_allow_html=True)
 
-# ── Load data ─────────────────────────────────────────────────────────────────
+# load data
 df = load_data()
 
 CHART_THEME = dict(
@@ -171,10 +195,8 @@ CHART_THEME = dict(
     colorway=["#6366f1","#8b5cf6","#ec4899","#06b6d4","#10b981","#f59e0b"],
 )
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# PAGE: Dataset Explorer
-# ═══════════════════════════════════════════════════════════════════════════════
-if "Dataset Explorer" in menu:
+# dataset preview
+if "Dataset Explorer" in menu or "W1" in menu or "Dataset Preview" in menu:
     st.markdown("""
     <div class='top-header'>
         <span style='font-size:1.6rem;'>📊</span>
@@ -362,18 +384,273 @@ if "Dataset Explorer" in menu:
     </div>
     """, unsafe_allow_html=True)
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# Other pages
-# ═══════════════════════════════════════════════════════════════════════════════
+# week 2 eda viewer
+elif "EDA" in menu or "W2" in menu:
+    st.markdown("""
+    <div class='top-header'>
+        <span style='font-size:1.6rem;'>🔍</span>
+        <b style='font-size:1.3rem; color:#e2e8f0;'> EDA Viewer</b>
+        <div style='font-size:0.8rem; color:#64748b; margin-top:4px;'>Week 2 — Missing value report, outlier detection (IQR &amp; Z-score) &amp; distribution charts</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    if df is None:
+        st.error("Dataset not found. Run `python src/dataset_generator.py` first.")
+        st.stop()
+
+    # Outlier detection helper functions
+    def find_outliers_iqr(df_in, col, k):
+        s = df_in[col].dropna()
+        q1 = s.quantile(0.25)
+        q3 = s.quantile(0.75)
+        iqr = q3 - q1
+        low = q1 - (k * iqr)
+        high = q3 + (k * iqr)
+        mask = (df_in[col] < low) | (df_in[col] > high)
+        return mask, low, high
+
+    def find_outliers_zscore(df_in, col, thresh=3.0):
+        s = df_in[col].dropna()
+        mean = s.mean()
+        std = s.std()
+        if std == 0:
+            return pd.Series(False, index=df_in.index), mean, mean
+        z = (df_in[col] - mean).abs() / std
+        mask = z > thresh
+        low = mean - (thresh * std)
+        high = mean + (thresh * std)
+        return mask, low, high
+
+    # Apply global filters
+    df_filtered = df.copy()
+    if filter_role != "All":
+        df_filtered = df_filtered[df_filtered["Job_Role"] == filter_role]
+    if filter_edu != "All":
+        df_filtered = df_filtered[df_filtered["Education"] == filter_edu]
+    if view_order == "Top N":
+        df_filtered = df_filtered.head(row_limit)
+    elif view_order == "Bottom N":
+        df_filtered = df_filtered.tail(row_limit)
+
+    # 5 Dynamic KPIs
+    tot_res = len(df_filtered)
+    short_ct = int(df_filtered["Shortlisted"].sum()) if ("Shortlisted" in df_filtered.columns and tot_res > 0) else 0
+    short_pct = round((short_ct / tot_res) * 100, 1) if tot_res > 0 else 0.0
+    avg_exp = round(df_filtered["Experience_Years"].mean(), 1) if (tot_res > 0 and "Experience_Years" in df_filtered.columns) else 0.0
+    avg_cgpa = round(df_filtered["CGPA"].mean(), 2) if (tot_res > 0 and "CGPA" in df_filtered.columns) else 0.0
+    total_cells = tot_res * len(df_filtered.columns) if tot_res > 0 else 1
+    miss_pct = round((df_filtered.isnull().sum().sum() / total_cells) * 100, 1) if tot_res > 0 else 0.0
+
+    k1, k2, k3, k4, k5 = st.columns(5)
+    for col_w, val, lbl, sub in [
+        (k1, str(tot_res), "Total Resumes", "filtered count"),
+        (k2, f"{short_pct}%", "Shortlisted", f"{short_ct} candidates"),
+        (k3, f"{avg_exp} yrs", "Avg Experience", "in years"),
+        (k4, str(avg_cgpa), "Avg CGPA", "out of 10"),
+        (k5, f"{miss_pct}%", "Missing Rate", "of all cells"),
+    ]:
+        col_w.markdown(f"""
+        <div class='metric-card'>
+            <div class='val'>{val}</div>
+            <div class='lbl'>{lbl}</div>
+            <div class='sub'>{sub}</div>
+        </div>""", unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # Tabs: Missing Values | Outliers | Charts
+    tab_miss, tab_out, tab_ch = st.tabs(["📋 Missing Values", "⚠️ Outliers", "📊 Charts"])
+
+    # tab 1: missing values
+    with tab_miss:
+        st.markdown("<div class='section-header'>Missing Value Report</div>", unsafe_allow_html=True)
+
+        miss_list = []
+        for c in df_filtered.columns:
+            m_count = int(df_filtered[c].isnull().sum())
+            m_pct = round((m_count / tot_res) * 100, 2) if tot_res > 0 else 0.0
+            miss_list.append({
+                "Column": c,
+                "Missing Count": m_count,
+                "Missing %": m_pct,
+                "Non-Null Count": tot_res - m_count,
+                "Data Type": str(df_filtered[c].dtype)
+            })
+        miss_df = pd.DataFrame(miss_list)
+
+        left_m, right_m = st.columns([3, 2], gap="medium")
+        with left_m:
+            st.dataframe(miss_df, use_container_width=True, height=300)
+            csv_bytes = miss_df.to_csv(index=False).encode("utf-8")
+            st.download_button(
+                label="📥 Download Missing Values CSV",
+                data=csv_bytes,
+                file_name="missing_values_report.csv",
+                mime="text/csv"
+            )
+        with right_m:
+            miss_bar = miss_df[miss_df["Missing Count"] > 0]
+            if len(miss_bar) > 0:
+                fig_miss = px.bar(
+                    miss_bar,
+                    x="Missing Count",
+                    y="Column",
+                    orientation="h",
+                    color="Missing %",
+                    color_continuous_scale=["#fca5a5", "#ef4444", "#7f1d1d"],
+                    text="Missing Count"
+                )
+                fig_miss.update_layout(**CHART_THEME, height=300, margin=dict(t=10,b=10,l=10,r=10),
+                                       coloraxis_showscale=False, yaxis_title="", xaxis_title="Missing Count")
+                fig_miss.update_traces(textposition="outside")
+                st.plotly_chart(fig_miss, use_container_width=True)
+            else:
+                st.success("No missing values in the filtered dataset.")
+
+    # tab 2: outliers
+    with tab_out:
+        st.markdown("<div class='section-header'>Outlier Detection Summary</div>", unsafe_allow_html=True)
+        st.caption(f"Active Method: {outlier_method}")
+
+        num_cols = ["Experience_Years", "CGPA", "Projects_Count"]
+        outlier_rows = []
+        outlier_data = {}
+
+        for c in num_cols:
+            if c in df_filtered.columns:
+                if "1.5" in outlier_method:
+                    mask, low, high = find_outliers_iqr(df_filtered, c, 1.5)
+                elif "3.0" in outlier_method:
+                    mask, low, high = find_outliers_iqr(df_filtered, c, 3.0)
+                else:
+                    mask, low, high = find_outliers_zscore(df_filtered, c, 3.0)
+
+                outlier_data[c] = (mask, low, high)
+                ct = int(mask.sum())
+                pct = round((ct / tot_res) * 100, 2) if tot_res > 0 else 0.0
+                outlier_rows.append({
+                    "Feature": c,
+                    "Outlier Count": ct,
+                    "Outlier %": pct,
+                    "Lower Bound": round(low, 2),
+                    "Upper Bound": round(high, 2),
+                    "Min in Data": round(df_filtered[c].min(), 2) if tot_res > 0 else 0,
+                    "Max in Data": round(df_filtered[c].max(), 2) if tot_res > 0 else 0
+                })
+
+        outlier_summary_df = pd.DataFrame(outlier_rows)
+        st.dataframe(outlier_summary_df, use_container_width=True)
+
+        st.markdown(f"<div class='section-header'>Flagged Outlier Rows ({target_col})</div>", unsafe_allow_html=True)
+        if target_col in outlier_data:
+            mask_t, low_t, high_t = outlier_data[target_col]
+            flagged_rows = df_filtered[mask_t]
+            st.write(f"Detected **{len(flagged_rows)}** outlier rows outside `[{round(low_t,2)}, {round(high_t,2)}]`:")
+            if len(flagged_rows) > 0:
+                display_cols = [c for c in ["Candidate_ID", "Job_Role", "Education", target_col, "Shortlisted", "Skills"] if c in flagged_rows.columns]
+                st.dataframe(flagged_rows[display_cols], use_container_width=True)
+            else:
+                st.info(f"No outliers found in {target_col} under current settings.")
+
+    # tab 3: charts
+    with tab_ch:
+        df_chart = df_filtered.copy()
+        if "Shortlisted" in df_chart.columns:
+            df_chart["Status"] = df_chart["Shortlisted"].map({1: "Shortlisted", 0: "Rejected"}).fillna("Unknown")
+        else:
+            df_chart["Status"] = "Unknown"
+
+        c_box, c_viol = st.columns(2, gap="medium")
+        with c_box:
+            st.markdown(f"<div class='section-header'>Box Plot ({target_col})</div>", unsafe_allow_html=True)
+            fig_box = px.box(
+                df_chart.dropna(subset=[target_col]),
+                x="Job_Role",
+                y=target_col,
+                color="Status",
+                color_discrete_map={"Shortlisted": "#4ade80", "Rejected": "#f87171"},
+                points="outliers"
+            )
+            fig_box.update_layout(**CHART_THEME, height=330, margin=dict(t=10,b=10,l=10,r=10),
+                                  xaxis_title="", yaxis_title=target_col,
+                                  legend=dict(orientation="h", y=-0.25))
+            st.plotly_chart(fig_box, use_container_width=True)
+
+        with c_viol:
+            st.markdown(f"<div class='section-header'>Violin Distribution ({target_col})</div>", unsafe_allow_html=True)
+            fig_viol = px.violin(
+                df_chart.dropna(subset=[target_col]),
+                x="Status",
+                y=target_col,
+                color="Status",
+                color_discrete_map={"Shortlisted": "#4ade80", "Rejected": "#f87171"},
+                box=True,
+                points="all"
+            )
+            fig_viol.update_layout(**CHART_THEME, height=330, margin=dict(t=10,b=10,l=10,r=10),
+                                   xaxis_title="", yaxis_title=target_col,
+                                   legend=dict(orientation="h", y=-0.25))
+            st.plotly_chart(fig_viol, use_container_width=True)
+
+        st.markdown("<hr>", unsafe_allow_html=True)
+
+        c_heat, c_scat = st.columns(2, gap="medium")
+        with c_heat:
+            st.markdown("<div class='section-header'>Correlation Heatmap</div>", unsafe_allow_html=True)
+            heat_cols = [c for c in ["Experience_Years", "CGPA", "Projects_Count", "Shortlisted"] if c in df_filtered.columns]
+            if len(heat_cols) > 1 and len(df_filtered) > 1:
+                corr_matrix = df_filtered[heat_cols].corr().round(2)
+                fig_heat = px.imshow(
+                    corr_matrix,
+                    text_auto=True,
+                    aspect="auto",
+                    color_continuous_scale="Viridis",
+                    zmin=-1,
+                    zmax=1
+                )
+                fig_heat.update_layout(**CHART_THEME, height=330, margin=dict(t=10,b=10,l=10,r=10))
+                st.plotly_chart(fig_heat, use_container_width=True)
+            else:
+                st.info("Insufficient data to compute correlation matrix.")
+
+        with c_scat:
+            st.markdown("<div class='section-header'>Experience vs CGPA Scatter</div>", unsafe_allow_html=True)
+            if "Experience_Years" in df_chart.columns and "CGPA" in df_chart.columns:
+                scat_sample = df_chart.dropna(subset=["Experience_Years", "CGPA"])
+                fig_scat = px.scatter(
+                    scat_sample,
+                    x="Experience_Years",
+                    y="CGPA",
+                    color="Status",
+                    color_discrete_map={"Shortlisted": "#4ade80", "Rejected": "#f87171"},
+                    hover_data=["Candidate_ID", "Job_Role"],
+                    opacity=0.75
+                )
+                fig_scat.update_layout(**CHART_THEME, height=330, margin=dict(t=10,b=10,l=10,r=10),
+                                       xaxis_title="Experience (Years)", yaxis_title="CGPA",
+                                       legend=dict(orientation="h", y=-0.25))
+                st.plotly_chart(fig_scat, use_container_width=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div class='info-banner'>
+        <strong>Week 2 Complete — EDA Viewer</strong><br>
+        Analyzed missing value patterns and detected outliers across numerical features using {outlier_method}.<br>
+        Generated correlation matrix and distribution plots (box, violin, scatter).<br><br>
+        <strong>Next &rarr;</strong> Week 3: Cleaning Comparison (duplicate removal, null imputation, capping outliers, text cleaning)
+    </div>
+    """, unsafe_allow_html=True)
+
+# other pages
 else:
     page_map = {
-        "EDA":                ("🔍", "EDA & Insights",             "Week 2"),
-        "Data Cleaning":      ("🧹", "Data Cleaning",              "Week 3"),
-        "Feature Engineering":("⚙️",  "Feature Engineering",        "Week 4"),
-        "Model Training":     ("🤖", "Model Training",             "Week 5"),
-        "Model Evaluation":   ("📈", "Model Evaluation",           "Week 6"),
-        "Full Pipeline":      ("🚀", "Full ML Pipeline",           "Week 7"),
-        "Resume Ranker":      ("🗂️",  "Live Resume Ranker",         "Week 8"),
+        "W3": ("🧹", "W3: Cleaning Comparison", "Week 3"),
+        "W4": ("⚙️",  "W4: Feature Engineering",  "Week 4"),
+        "W5": ("🤖", "W5: Baseline Training",   "Week 5"),
+        "W6": ("🎯", "W6: Model Tuning",        "Week 6"),
+        "W7": ("📈", "W7: Evaluation",          "Week 7"),
+        "W8": ("🚀", "W8: Pipeline Runner",     "Week 8"),
+        "W9": ("🗂️",  "W9: Dashboard + Extras",  "Week 9"),
     }
     for key, (icon, title, week) in page_map.items():
         if key in menu:
