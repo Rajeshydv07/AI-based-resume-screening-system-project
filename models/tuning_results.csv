@@ -1,0 +1,4 @@
+Model,Best Parameters,Tuned CV F1,Test Accuracy,Test F1,Test Precision,Test Recall,Test ROC-AUC
+Logistic Regression,"{'C': 5.0, 'class_weight': 'balanced', 'solver': 'liblinear'}",0.8026,0.84,0.8222,0.8132,0.8315,0.9175
+Random Forest,"{'class_weight': 'balanced', 'max_depth': 20, 'min_samples_split': 5, 'n_estimators': 100}",0.8433,0.875,0.8521,0.9,0.809,0.9537
+Support Vector Machine,"{'C': 10.0, 'class_weight': 'balanced', 'kernel': 'rbf'}",0.8707,0.895,0.8827,0.8778,0.8876,0.9615

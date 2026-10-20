@@ -22,17 +22,31 @@ Recruitment teams spend substantial time manually screening resumes for technica
 resume-screening/
 |-- data/
 |   |-- raw_resumes.csv                 # Raw dataset (1,020 candidate profiles)
-|   `-- cleaned_resumes.csv             # Cleaned dataset (Week 3)
-|-- models/                             # Serialized ML models and preprocessors (Week 5+)
+|   |-- cleaned_resumes.csv             # Sanitized dataset without duplicates/outliers
+|   |-- X_train.csv / X_test.csv        # Engineered feature matrices (80/20 split)
+|   `-- pipeline_predictions.csv        # Batch prediction outputs
+|-- models/
+|   |-- model.pkl                       # Tuned production champion model
+|   |-- tfidf.pkl                       # Fitted TF-IDF vectorizer (max_features=500)
+|   |-- minmax_scaler.pkl               # Fitted numerical scaler
+|   `-- tuning_results.csv              # Hyperparameter search results
 |-- notebooks/
-|   `-- week1_data_collection_eda.ipynb # Week 1 data collection and EDA notebook
+|   `-- week1_data_collection_eda.ipynb # EDA notebook
 |-- src/
-|   `-- dataset_generator.py            # Synthetic dataset generation script
+|   |-- dataset_generator.py            # Synthetic dataset generator
+|   |-- data_cleaner.py                 # Cleaning & text normalization module
+|   |-- feature_engineer.py             # Feature extraction and encoding pipeline
+|   |-- model_trainer.py                # 5-fold CV baseline model trainer
+|   |-- model_tuner.py                  # GridSearchCV hyperparameter optimization
+|   |-- model_evaluator.py              # Performance evaluation & ROC/PR curves
+|   `-- pipeline.py                     # Production pipeline runner
+|-- tests/
+|   `-- test_pipeline.py                # Automated unit tests
 |-- app.py                              # Streamlit recruiter dashboard
 |-- problem_statement.md                # Project problem definition and scope
-|-- PROJECT_CONTEXT.md                  # Project milestones and working constraints
-|-- README.md                           # Project documentation
-`-- requirements.txt                    # Project dependencies
+|-- PROJECT_CONTEXT.md                  # Project milestones and specifications
+|-- README.md                           # Documentation
+`-- requirements.txt                    # Python dependencies
 ```
 
 ---
@@ -43,13 +57,13 @@ resume-screening/
 |---|---|---|---|
 | Week 1 | Data Collection & EDA | Completed | `src/dataset_generator.py`, `data/raw_resumes.csv`, `notebooks/week1_data_collection_eda.ipynb` |
 | Week 2 | EDA Viewer & Deep Dive | Completed | `app.py` (W2: EDA Viewer), Outlier detection (IQR & Z-score), Missing report & CSV export, Plotly charts |
-| Week 3 | Data Cleaning & Preprocessing | Planned | Duplicate removal, null imputation, text cleaning |
-| Week 4 | Feature Engineering | Planned | TF-IDF extraction, skill encoding, similarity scoring |
-| Week 5 | Baseline Model Training | Planned | Logistic Regression, Decision Tree, Random Forest |
-| Week 6 | Hyperparameter Tuning | Planned | Grid search, cross-validation, model optimization |
-| Week 7 | Model Evaluation | Planned | Confusion matrix, ROC-AUC, classification metrics |
-| Week 8 | End-to-End Pipeline Runner | Planned | Scikit-learn Pipeline with ColumnTransformer |
-| Week 9 | Final Recruiter Dashboard | Planned | Resume ranking, skill gap advisor, and score enhancement |
+| Week 3 | Data Cleaning & Preprocessing | Completed | `src/data_cleaner.py`, `data/cleaned_resumes.csv`, `app.py` (W3: Cleaning Comparison) |
+| Week 4 | Feature Engineering | Completed | `src/feature_engineer.py`, TF-IDF, ordinal/one-hot encoding, cosine match scoring |
+| Week 5 | Baseline Model Training | Completed | `src/model_trainer.py`, Logistic Regression, Naive Bayes, Random Forest, SVM (5-fold CV) |
+| Week 6 | Hyperparameter Tuning | Completed | `src/model_tuner.py`, GridSearchCV parameter optimization, champion `models/model.pkl` |
+| Week 7 | Model Evaluation | Completed | `src/model_evaluator.py`, Confusion matrix, ROC curve (AUC 0.869), PR curve, feature importance |
+| Week 8 | End-to-End Pipeline Runner | Completed | `src/pipeline.py`, unified class execution, `tests/test_pipeline.py` unit testing |
+| Week 9 | Final Recruiter Dashboard | Completed | Job description ranking, instant single-resume analyzer, skill gap advisor |
 
 ---
 

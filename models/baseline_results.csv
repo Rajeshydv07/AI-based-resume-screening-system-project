@@ -1,0 +1,5 @@
+Model,CV Accuracy,CV F1,Test Accuracy,Test F1,Test Precision,Test Recall,Train Time (s)
+Logistic Regression,0.8113,0.7914,0.83,0.8,0.8395,0.764,0.25
+Naive Bayes,0.7588,0.7225,0.78,0.7471,0.7647,0.7303,0.1
+Random Forest,0.8662,0.8443,0.865,0.8402,0.8875,0.7978,2.27
+Support Vector Machine,0.8412,0.8308,0.84,0.8261,0.8,0.8539,1.9
