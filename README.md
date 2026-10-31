@@ -1,6 +1,8 @@
 # AI-Based Resume Screening and Candidate Shortlisting System
 
-A 9-week machine learning project for automated resume evaluation and candidate shortlisting, developed as part of a final-year B.Tech project under the guidance of HCL Tech.
+A machine learning project for automated resume evaluation and candidate shortlisting, developed as part of a final-year B.Tech project under the guidance of HCL Tech (Career Shaper Programme).
+
+**Live Application:** [https://resumeiqr.streamlit.app/](https://resumeiqr.streamlit.app/)
 
 ---
 
