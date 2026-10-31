@@ -116,12 +116,17 @@ resume-screening/
    python src/dataset_generator.py
    ```
 
-4. Launch the recruiter dashboard:
+4. Run Automated Test Suite:
+   ```bash
+   python -m unittest discover tests
+   ```
+
+5. Launch the recruiter dashboard:
    ```bash
    python -m streamlit run app.py
    ```
 
-5. Access the application in your browser at `http://localhost:8501`.
+6. Access the application in your browser at `http://localhost:8501`.
 
 ---
 
@@ -129,6 +134,8 @@ resume-screening/
 
 - **Programming Language**: Python 3.10
 - **Data Analysis & Visualization**: Pandas, NumPy, Plotly
-- **Machine Learning**: Scikit-Learn
+- **Machine Learning & NLP**: Scikit-Learn, TF-IDF Vectorization
+- **Document Processing**: pdfplumber, pypdf
 - **Web Interface**: Streamlit
+- **Testing & Quality Assurance**: Python unittest suite (100% test pass rate)
 - **Development Environment**: Jupyter Notebook, VS Code

@@ -2,28 +2,26 @@ import streamlit as st
 import pandas as pd
 from src.match_scorer import compute_candidate_match, ROLE_SPECS
 
-def render(df):
-    st.subheader("Rank candidates")
-    st.write("Select a job role to view ranked candidates.")
-
+def render(df, sel_role=None, top_n=10, min_score=0):
     if df is None or len(df) == 0:
         st.info("No candidates available to display.")
         return
 
-    # role selection and filters
+    # role selection and filters (if not passed externally)
     all_roles = list(ROLE_SPECS.keys())
     if "Job_Role" in df.columns:
         dataset_roles = [r for r in df["Job_Role"].dropna().unique() if str(r).strip() in ROLE_SPECS]
         if dataset_roles:
             all_roles = sorted(dataset_roles)
 
-    c1, c2, c3 = st.columns([2, 1, 1])
-    with c1:
-        sel_role = st.selectbox("Job role", all_roles, index=0)
-    with c2:
-        top_n = st.slider("Show candidates", min_value=5, max_value=50, value=10, step=5)
-    with c3:
-        min_score = st.slider("Minimum match score", min_value=0, max_value=100, value=0, step=5)
+    if sel_role is None:
+        c1, c2, c3 = st.columns([2, 1, 1])
+        with c1:
+            sel_role = st.selectbox("Job role", all_roles, index=0)
+        with c2:
+            top_n = st.slider("Show candidates", min_value=5, max_value=50, value=10, step=5)
+        with c3:
+            min_score = st.slider("Minimum match score", min_value=0, max_value=100, value=0, step=5)
 
     sub_df = df.copy()
 

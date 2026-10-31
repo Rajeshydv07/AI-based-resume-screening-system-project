@@ -15,8 +15,103 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# inject clean accessible styles
+# simple student styles for step-by-step layout
+STEP_CSS = """
+<style>
+/* top banner */
+.banner {
+    background-color: #185FA5;
+    color: #FFFFFF;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+.banner-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: #FFFFFF;
+}
+.banner-sub {
+    font-size: 0.95rem;
+    color: #E0E7FF;
+    margin-top: 4px;
+}
+
+/* step cards row */
+.step-card {
+    border-radius: 12px;
+    border: 1px solid #E2E8F0;
+    padding: 14px;
+    min-height: 120px;
+    margin-bottom: 16px;
+}
+.card-pink { background-color: #FDF2F8; border-color: #FBCFE8; }
+.card-blue { background-color: #EFF6FF; border-color: #BFDBFE; }
+.card-green { background-color: #F0FDF4; border-color: #BBF7D0; }
+.card-yellow { background-color: #FEFCE8; border-color: #FEF08A; }
+
+/* circular number badge */
+.badge {
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-right: 8px;
+}
+.badge-pink { background-color: #F472B6; color: #FFFFFF; }
+.badge-blue { background-color: #3B82F6; color: #FFFFFF; }
+.badge-green { background-color: #22C55E; color: #FFFFFF; }
+.badge-yellow { background-color: #EAB308; color: #FFFFFF; }
+
+.card-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #1E293B;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+}
+.card-text {
+    font-size: 0.8rem;
+    color: #475569;
+    line-height: 1.4;
+}
+
+/* section headers */
+.section-header {
+    display: flex;
+    align-items: center;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1E293B;
+    margin-top: 24px;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #E2E8F0;
+}
+
+/* bottom completion bar */
+.done-bar {
+    background-color: #DCFCE7;
+    border: 1px solid #86EFAC;
+    color: #166534;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: 28px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+</style>
+"""
 st.markdown(APP_CSS, unsafe_allow_html=True)
+st.markdown(STEP_CSS, unsafe_allow_html=True)
 
 REQUIRED_COLUMNS = ['Resume_Text', 'Skills', 'Experience_Years', 'Education', 'CGPA', 'Job_Role']
 
@@ -43,17 +138,6 @@ with st.sidebar:
 
     st.markdown("<hr style='border-color:#E2E8F0; margin: 10px 0;'>", unsafe_allow_html=True)
 
-    st.markdown("<div style='font-size:0.82rem; font-weight:600; color:#334155;'>How to use</div>", unsafe_allow_html=True)
-    st.markdown("""
-    <div style='font-size:0.8rem; color:#475569; line-height:1.5; margin-top:6px;'>
-    1. <strong>Rank candidates:</strong> Select a job role to view prioritized applicants.<br><br>
-    2. <strong>Check one resume:</strong> Upload a candidate CV to get instant match ratings.<br><br>
-    3. <strong>Improve a resume:</strong> Review missing competencies and recommended keywords.
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("<hr style='border-color:#E2E8F0; margin: 16px 0;'>", unsafe_allow_html=True)
-
     st.markdown("<div style='font-size:0.82rem; font-weight:600; color:#334155;'>Model information</div>", unsafe_allow_html=True)
     st.markdown("""
     <div style='background-color:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:10px; margin-top:6px; font-size:0.8rem;'>
@@ -67,18 +151,69 @@ with st.sidebar:
     st.markdown("<hr style='border-color:#E2E8F0; margin: 12px 0;'>", unsafe_allow_html=True)
     st.markdown("""
     <div style='font-size:0.75rem; color:#64748B;'>
-        Developed by Final-Year B.Tech Team<br>
+        Developed by Rajesh Yadav<br>
         <strong>ABES Engineering College</strong>
     </div>
     """, unsafe_allow_html=True)
 
-# top main header
+# 1. Top banner
 st.markdown("""
-<div class='app-header'>
-    <div class='app-title'>ResumeIQ</div>
-    <div class='app-subtitle'>Rank candidates for a job, check a single resume, and see how to improve it.</div>
+<div class='banner'>
+    <div class='banner-title'>ResumeIQ</div>
+    <div class='banner-sub'>Upload resumes, pick a job role, and see who matches best.</div>
 </div>
 """, unsafe_allow_html=True)
+
+# 2. Four numbered step cards
+sc1, sc2, sc3, sc4 = st.columns(4)
+
+with sc1:
+    st.markdown("""
+    <div class='step-card card-pink'>
+        <div class='card-title'>
+            <span class='badge badge-pink'>1</span> Upload Resumes
+        </div>
+        <div class='card-text'>
+            Upload CSV or PDF files. Or use the sample dataset.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with sc2:
+    st.markdown("""
+    <div class='step-card card-blue'>
+        <div class='card-title'>
+            <span class='badge badge-blue'>2</span> Select Job Role
+        </div>
+        <div class='card-text'>
+            Choose the role you are hiring for.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with sc3:
+    st.markdown("""
+    <div class='step-card card-green'>
+        <div class='card-title'>
+            <span class='badge badge-green'>3</span> View Results
+        </div>
+        <div class='card-text'>
+            See ranked candidates or check one resume.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with sc4:
+    st.markdown("""
+    <div class='step-card card-yellow'>
+        <div class='card-title'>
+            <span class='badge badge-yellow'>4</span> Improve Resume
+        </div>
+        <div class='card-text'>
+            See missing skills and keywords to add.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 # 1. Front Upload & Dataset Resolution (CSV + PDF)
 sample_mtime = get_file_mtime(os.path.join("data", "pipeline_predictions.csv"))
@@ -86,6 +221,13 @@ sample_df = load_sample_dataset(sample_mtime)
 
 active_df = None
 active_badge_html = ""
+
+# Section 1: Upload Resumes
+st.markdown("""
+<div class='section-header'>
+    <span class='badge badge-pink'>1</span> Upload Resumes
+</div>
+""", unsafe_allow_html=True)
 
 with st.container():
     up_c1, up_c2 = st.columns([3, 1], gap="medium")
@@ -237,15 +379,44 @@ with st.container():
 if active_badge_html:
     st.markdown(active_badge_html, unsafe_allow_html=True)
 
-# 2. KPI Cards
+from src.match_scorer import ROLE_SPECS
+
+# Section 2: Select Job Role
+st.markdown("""
+<div class='section-header'>
+    <span class='badge badge-blue'>2</span> Select Job Role
+</div>
+""", unsafe_allow_html=True)
+
+all_available_roles = list(ROLE_SPECS.keys())
+if active_df is not None and "Job_Role" in active_df.columns:
+    dataset_roles = [r for r in active_df["Job_Role"].dropna().unique() if str(r).strip() in ROLE_SPECS]
+    if dataset_roles:
+        all_available_roles = sorted(dataset_roles)
+
+c_r1, c_r2, c_r3 = st.columns([2, 1, 1])
+with c_r1:
+    selected_job_role = st.selectbox("Job role", all_available_roles, index=0, key="sec2_role")
+with c_r2:
+    selected_top_n = st.slider("Show candidates", min_value=5, max_value=50, value=10, step=5, key="sec2_top_n")
+with c_r3:
+    selected_min_score = st.slider("Minimum match score", min_value=0, max_value=100, value=0, step=5, key="sec2_min_score")
+
+# Section 3: View Results
+st.markdown("""
+<div class='section-header'>
+    <span class='badge badge-green'>3</span> View Results
+</div>
+""", unsafe_allow_html=True)
+
+# KPI Cards
 tot_resumes = len(active_df) if active_df is not None else 0
 
 if active_df is not None:
-    # compute composite scores across active dataset
     strong_cnt = 0
     match_sum = 0
     for _, row in active_df.iterrows():
-        role = row.get("Job_Role", "Software Engineer")
+        role = row.get("Job_Role", selected_job_role)
         eval_dict = compute_candidate_match(row, role)
         if eval_dict["result_label"] == "Strong match":
             strong_cnt += 1
@@ -308,18 +479,30 @@ with k4:
 
 st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 
-# 3. Main Tabs
-t_rank, t_check, t_improve = st.tabs([
+# Results Tabs
+t_rank, t_check = st.tabs([
     "Rank candidates",
-    "Check one resume",
-    "Improve a resume"
+    "Check one resume"
 ])
 
 with t_rank:
-    tab_rank.render(active_df)
+    tab_rank.render(active_df, sel_role=selected_job_role, top_n=selected_top_n, min_score=selected_min_score)
 
 with t_check:
     tab_check.render()
 
-with t_improve:
-    tab_improve.render()
+# Section 4: Improve a resume
+st.markdown("""
+<div class='section-header'>
+    <span class='badge badge-yellow'>4</span> Improve Resume
+</div>
+""", unsafe_allow_html=True)
+
+tab_improve.render()
+
+# 5. Bottom completion green bar
+st.markdown("""
+<div class='done-bar'>
+    Done. You can now download or share the shortlisted candidates.
+</div>
+""", unsafe_allow_html=True)
